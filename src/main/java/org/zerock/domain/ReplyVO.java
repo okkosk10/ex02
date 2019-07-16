@@ -11,5 +11,5 @@ public class ReplyVO {
 	private String reply;
 	private String replyer;
 	private Date replyDate;
-	private Date upDdateDate;
+	private Date updateDate;
 }
