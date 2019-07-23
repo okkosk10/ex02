@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.ReplyService;
 
@@ -28,7 +29,7 @@ import lombok.extern.log4j.Log4j;
 public class ReplyController {
 
 	private ReplyService service;
-	
+	 
 	@PostMapping(value = "/new",
 			consumes = "application/json",
 			produces = { MediaType.TEXT_PLAIN_VALUE })
@@ -48,15 +49,15 @@ public class ReplyController {
 			produces = {
 					MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(
+	public ResponseEntity<ReplyPageDTO> getList(
 			@PathVariable("page") int page,
 			@PathVariable("bno") Long bno) {
 		
-		log.info("getList..........");
 		Criteria cri = new Criteria(page,10);
-		log.info(cri);
+		log.info("cri:" + cri);
+		log.info("get Reply List bno: " + bno);
 		
-		return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<>(service.getListPage(cri, bno), HttpStatus.OK);
 	}
 	@GetMapping(value = "/{rno}",
 			produces = { MediaType.APPLICATION_XML_VALUE,
@@ -80,7 +81,7 @@ public class ReplyController {
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH },
 				value = "/{rno}",
 				consumes = "application/json",
-				produces = { MediaType.TEXT_PLAIN_VALUE})
+				produces = { MediaType.TEXT_PLAIN_VALUE })
 		public ResponseEntity<String> modify(
 				@RequestBody ReplyVO vo,
 				@PathVariable("rno") Long rno) {
